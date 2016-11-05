@@ -80,6 +80,14 @@ function wait_for_content () {
         Auto Sort directly one time
     */
     sort_all();
+
+    /*
+        remove summaries, they distract
+    */
+    var elements = document.querySelectorAll("span[class=u0Summary]");
+    for(var i=0; i < elements.length; i++) {
+        elements[i].setAttribute("style", "display:none;")
+    }
 }
 
 wait_for_actionbar();
