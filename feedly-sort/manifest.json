@@ -1,0 +1,31 @@
+{
+
+  "description": "Adds auto sort to feedly.",
+  "manifest_version": 2,
+  "name": "Feedly-Sort",
+  "version": "1.0",
+  "homepage_url": "https://github.com/johuellm/webextensions-examples/feedly-sort",
+  "icons": {
+    "48": "icons/sort-icon.svg",
+    "96": "icons/sort-icon.svg"
+  },
+
+  "applications": {
+    "gecko": {
+      "id": "feedly-sort@mozilla.org",
+      "strict_min_version": "45.0"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.feedly.com/*"],
+      "js": ["feedly-sort.js"]
+    }
+  ],
+
+    "web_accessible_resources": [
+    "icons/sort-icon-48px.png"
+  ]
+
+}
