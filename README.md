@@ -9,6 +9,7 @@ Features:
  - 2 fancy buttons to manually sort
 
 Other nice Ideas:
+ - enable disable sort
  - Remove duplicate news stories
 
 If you like Feedly, consider purchasing the Pro-Subscription instead!
