@@ -2,7 +2,7 @@
 sort function
 original: https://gist.github.com/paulegan/b5f98fdc36b85e58618d
 */
-function sort_all () {
+function sort_all_and_remove_summary () {
     var engagement = function (entry) {return parseInt(entry.querySelector('[data-engagement]').dataset.engagement);},
         entries = [],
         section = 0,
@@ -20,6 +20,14 @@ function sort_all () {
     if (firstContainer) {
         entries.sort(function (a, b) {return engagement(b) - engagement(a);});
         entries.forEach(function (i) {firstContainer.appendChild(i);});
+    }
+
+    /*
+        remove summaries, they distract
+    */
+    var elements = document.querySelectorAll("span[class=u0Summary]");
+    for(var i=0; i < elements.length; i++) {
+        elements[i].setAttribute("style", "display:none;")
     }
 }
 
@@ -47,7 +55,7 @@ function wait_for_actionbar () {
         sortImage.setAttribute("border", "0");
         sortImage.setAttribute("width", "24");
         sortImage.setAttribute("height", "24");
-        sortImage.onclick = function() { sort_all(); };
+        sortImage.onclick = function() { sort_all_and_remove_summary(); };
 
         actionBar.insertBefore(sortImage, actionBar.firstChild);
     }
@@ -62,7 +70,7 @@ function wait_for_actionbar () {
         sortImage.setAttribute("border", "0");
         sortImage.setAttribute("width", "18");
         sortImage.setAttribute("height", "18");
-        sortImage.onclick = function() { sort_all(); };
+        sortImage.onclick = function() { sort_all_and_remove_summary(); };
 
         floatingBar.insertBefore(sortImage, floatingBar.firstChild);
     }
@@ -79,15 +87,7 @@ function wait_for_content () {
     /*
         Auto Sort directly one time
     */
-    sort_all();
-
-    /*
-        remove summaries, they distract
-    */
-    var elements = document.querySelectorAll("span[class=u0Summary]");
-    for(var i=0; i < elements.length; i++) {
-        elements[i].setAttribute("style", "display:none;")
-    }
+    sort_all_and_remove_summary();
 }
 
 wait_for_actionbar();
