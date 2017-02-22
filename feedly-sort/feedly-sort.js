@@ -3,29 +3,34 @@ sort function
 original: https://gist.github.com/paulegan/b5f98fdc36b85e58618d
 */
 function sort_all_and_remove_summary () {
-    var engagement = function (entry) {return parseInt(entry.querySelector('[data-engagement]').dataset.engagement);},
-        entries = [],
-        section = 0,
-        firstContainer,
-        container;
-    while (true) {
-        container = document.getElementById('section' + section + '_column0');
-        if (!container)
-            break;
-        if (!firstContainer)
-            firstContainer = container;
-        [].push.apply(entries, container.children);
-        section++;
+
+    var engagement = function engagement(entry) {
+      var e = entry.querySelector('[data-dot="engagement-count"]');
+      if (e) {
+        var t = e.innerText;
+        var x = t[t.length - 1] === 'K' ? 1000 : 1;
+        return parseInt(t) * x;
+      } else {
+        return 0;
+      }
+    };
+
+    var entries = [];
+    var firstContainer = null;
+    for (var container of document.getElementsByClassName('list-entries')) {
+      if (!firstContainer)
+        firstContainer = container;
+      [].push.apply(entries, container.getElementsByClassName('entry'));
     }
     if (firstContainer) {
-        entries.sort(function (a, b) {return engagement(b) - engagement(a);});
-        entries.forEach(function (i) {firstContainer.appendChild(i);});
-    }
+      entries.sort(function (a, b) {return engagement(b) - engagement(a);});
+      entries.forEach(function (i) {firstContainer.appendChild(i);});
+  }
 
     /*
         remove summaries, they distract
     */
-    var elements = document.querySelectorAll("span[class=u0Summary]");
+    var elements = document.querySelectorAll(".content > .summary");
     for(var i=0; i < elements.length; i++) {
         elements[i].setAttribute("style", "display:none;")
     }
@@ -36,8 +41,8 @@ add button to action bar and floating action bar
 */
 function wait_for_actionbar () {
     
-    var actionBar = document.querySelector('#feedlyPageHeader > div[class="pageActionBar"]');
-    var floatingBar = document.querySelector('#floatingPageActionBar');
+    var actionBar = document.querySelector('.actions-and-details-container');
+    var floatingBar = document.querySelector('#headerBarFX > header:nth-child(1) > div:nth-child(2)');
 
     if (!actionBar || !floatingBar) {
         window.requestAnimationFrame(wait_for_actionbar);
@@ -53,11 +58,11 @@ function wait_for_actionbar () {
         sortImage.setAttribute("class", "pageAction requiresLogin");
         sortImage.setAttribute("style", "display: inline");
         sortImage.setAttribute("border", "0");
-        sortImage.setAttribute("width", "24");
-        sortImage.setAttribute("height", "24");
+        sortImage.setAttribute("width", "40");
+        sortImage.setAttribute("height", "40");
         sortImage.onclick = function() { sort_all_and_remove_summary(); };
 
-        actionBar.insertBefore(sortImage, actionBar.firstChild);
+        actionBar.appendChild(sortImage);
     }
     {   /* floating action bar button */
         var sortImage = document.createElement("img");
@@ -68,20 +73,19 @@ function wait_for_actionbar () {
         sortImage.setAttribute("class", "pageAction requiresLogin");
         sortImage.setAttribute("style", "display: inline");
         sortImage.setAttribute("border", "0");
-        sortImage.setAttribute("width", "18");
-        sortImage.setAttribute("height", "18");
+        sortImage.setAttribute("width", "40");
+        sortImage.setAttribute("height", "40");
         sortImage.onclick = function() { sort_all_and_remove_summary(); };
 
-        floatingBar.insertBefore(sortImage, floatingBar.firstChild);
+        floatingBar.appendChild(sortImage);
     }
 }
 
 function wait_for_content () {
-    var contentTable = document.getElementById('section0_column0');
-
-    if (!contentTable) {
+    var contentTable = document.getElementsByClassName('list-entries');
+    if (contentTable.length < 1) {
         window.requestAnimationFrame(wait_for_content);
-        return
+        return;
     }
 
     /*
