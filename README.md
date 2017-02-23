@@ -11,5 +11,6 @@ Features:
 Other nice Ideas:
  - enable disable sort
  - Remove duplicate news stories
+ - Auto Sort on Scroll!!!
 
 If you like Feedly, consider purchasing the Pro-Subscription instead!
